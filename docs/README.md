@@ -1,95 +1,150 @@
+# 订单评价的开发
 
-# 用户主页的开发
+源码 https://github.com/wangfupeng1988/react-simple-o2o-demo/tree/stage8-order-comment
 
-源码地址    https://github.com/wangfupeng1988/react-simple-o2o-demo/tree/stage7-user-page
+## 最终效果
 
-## 页面实现效果
+![](http://images2015.cnblogs.com/blog/138012/201701/138012-20170126173741831-976304841.png)
 
-![](http://images2015.cnblogs.com/blog/138012/201701/138012-20170125201523394-1791020710.png)
+## 三个状态
 
-## 路由配置
+一个简单的“评价”功能，就需要三个状态来管理
 
-查看该页面的路由配置代码。
+- 未评价：用户还没有评价，此时应该显示“评价”按钮，点击之后可以评价
+- 评价中：用户点击了“评价”按钮，还未写完评价内容。此时“评价”按钮应该暂时隐藏掉
+- 已评价：用户已经评价完成并提交了，此时应该显示“已评价”，并且不可点击
+
+我们通过一个`state`来保存这三个状态
 
 ```
-            <Router history={this.props.history}>
-                <Route path='/' component={App}>
-                    <Route path='/User' component={User}/>
-                </Route>
-            </Router>
+           {
+                this.state.commentState === 0
+                // 未评价
+                ? <button className="btn" onClick={this.showComment.bind(this)}>评价</button>
+                :
+                    this.state.commentState === 1
+                    // 评价中
+                    ? ''
+                    // 已经评价
+                    : <button className="btn unseleted-btn">已评价</button>
+            }
 ```
 
-路由指向的是`./app/containers/User`页面，创建`User`页面，并**连接 Redux**，因为需要用户登录的信息。
+## 评价状态的来源
 
-需要用户登录信息的用意是————渲染完成之后要判断用户是否登录，如果未登录则跳转到登录页面
+一个订单，最初显示的时候到底处于这三个状态中的哪一个？得有一个数据来源。这个来源就是后端接口返回的数据。在`Item`组件中，我们通过获取传递过来的状态信息，更新到`state`中，这就是来源。
 
 ```
     componentDidMount() {
-        // 如果未登录，跳转到登录页面
-        if (!this.props.userinfo.username) {
-            hashHistory.push('/Login')
-        }
+        // 将状态维护到 state 中
+        this.setState({
+            commentState: this.props.data.commentState
+        })
     }
 ```
 
-## Header
+## 显示和隐藏评价输入框
 
-页面头部可引用通用的`Header`组件，但是要对`Header`组件做一次简单的改造。
+要评价就得让用户输入内容，输入内容就得有一个`<textarea>`。这个`<textarea>`的显示和隐藏，也需要评价状态的控制。
 
-```
-<Header title="用户主页" backRouter="/home"/>
-```
-
-此前的`Header`组件中，返回时直接写了`hashHistory.push(hashHistory)`，简单粗暴。但是用户主页是从 Login 页面过来的，如果这样返回到 Login 页面，它判断用户已经登录了，会再次跳转到用户主页，就死循环了。因此我们这里要干预`Header`组件的返回事件，让它乖乖的返回的 Home 页面。
-
-## 显示用户信息
-
-创建`UserInfo`组件用以显示用户信息（用户名和城市），并引入到`User`页面中，同时将用户信息传入到组件中
+- 未评价：隐藏
+- 评价中：显示
+- 已评价：隐藏
 
 ```
-<UserInfo username={userinfo.username} city={userinfo.cityName}/>
+{
+    // “评价中”才会显示输入框
+    this.state.commentState === 1
+    ? <div className="comment-text-container">
+        <textarea></textarea>
+        <button onClick={this.submitComment.bind(this)}>提交</button>
+        &nbsp;
+        <button onClick={this.hideComment.bind(this)}>取消</button>
+    </div>
+    : ''
+}
 ```
 
-## 购买列表 - 子页面
-
-接下来要显示用户购买的商品的列表。此前在讲解“购买”功能的时候，曾经详细说明这里是**模拟购买**，即没有正式的购买流程。因此这里的购买列表也是模拟的，从后端获取数据，然后展示到页面中。
-
-在`subpage`中创建`OrderList.jsx`子页面（注意要引用同级别下的`style.less`），并将用户名传入。虽然这里是模拟的购买列表，但是获取后端接口时该有的参数还是得有，每个用户的购买列表不一样，因此要传递用户名过去。
+定义好规则之后，我们把评价按钮`<button onClick={this.showComment.bind(this)}>评价</button>`的点击事件写出来
 
 ```
-<OrderList username={userinfo.username}/>
+    showComment() {
+        // 显示输入框
+        this.setState({
+            commentState: 1
+        })
+    }
 ```
 
-在`OrderList`子页面中，我们通过用户名获取后端数据，fetch 接口（`./app/fetch/user/orderlist.js`）是这样的
+从功能角度看来，我们点击了“评价”按钮之后输入框就显示了。如果用 jquery 的开发方式，就需要在点击事件中操作 DOM 的显示和隐藏。而用 React 时，只需要将`state`修改即可，因为`state`能控制输入框的显示和隐藏。
+
+此处再次理解 React 中这种**以数据驱动视图**的开发方式。
+
+接下来，趁热打铁，再把取消按钮`<button onClick={this.hideComment.bind(this)}>取消</button>`的点击事件写出来
 
 ```
-export function getOrderListData(username) {
-    const result = get('/api/orderlist/' + username)
+    hideComment() {
+        // 隐藏输入框
+        this.setState({
+            commentState: 0
+        })
+    }
+```
+
+## 提交评价数据
+
+从以上代码中跳出来，定位到`./app/fetch/user/orderlist.js`中，先定义提交数据的最底层接口
+
+```
+export function postComment(id, comment) {
+    const result = post('/api/submitComment', {
+        id: id,
+        comment: comment
+    })
     return result
 }
 ```
 
-## 购买列表 - 组件
+这里我们终于用到了`POST`，此处详细看一下如何提交数据。
 
-获取完后端数据之后，然后交给一个组件来展示数据。创建`OrderListComponent`组件，并引用到子页面中，用以展示购买列表。
+然后，将代码定位到子页面`./app/containers/User/subpage/OrderList.jsx`中，将刚才定义的接口引入进来，然后在子页面层创建提交数据的方法，并将提交数据的方法传递到组件中
 
-```
-<OrderListComponent data={this.state.data}/>
-```
-
-在`OrderListComponent`组件中，先通过一个列表，将标题展示出来，详细内容用另外一个组件来展示。
-
-至此，回顾一下`./app/components/List`组件，其中还有一个`Item`组件，想想当时为什么这么设计。
-
-同理，这里也创建一个`Item`组件，用来展示详细信息。
 
 ```
-            <div>
-                {data.map((item, index) => {
-                    return <Item key={index} data={item}/>
-                })}
-            </div>
+<OrderListComponent data={this.state.data} submitComment={this.submitComment.bind(this)}/>
+
+submitComment(id, value, callback) {
+    .....
+}
 ```
 
-在`Item`组件中有一个`<button>评价</button>`按钮，该按钮点击没有反应，什么都没有做。这个评价功能将在下一大节详细讲解。
+这里为何将提交数据的方法定位到外面，再传递到组件中呢？————再去回顾**智能组件**和**木偶组件**的区别。
+
+再然后，在组件中实现`<button onClick={this.showComment.bind(this)}>评价</button>`的点击事件
+
+```
+    submitComment() {
+        // 获取操作函数
+        const submitComment = this.props.submitComment
+        // 获取id
+        const id = this.props.data.id
+        // 获取评价内容
+        const commentText = this.refs.commentText
+        const value = commentText.value.trim()
+        if (!value) {
+            return
+        }
+
+        // 执行数据提交
+        submitComment(id, value, this.commentOk.bind(this))
+    }
+    commentOk() {
+        // 已经评价，修改状态
+        this.setState({
+            commentState: 2
+        })
+    }
+```
+
+注意，要讲`this.commentOk.bind(this)`作为一个 callback 传递到 `submitComment`中，提交数据成功之后再回调。因此提交数据是一个异步的过程。
 
