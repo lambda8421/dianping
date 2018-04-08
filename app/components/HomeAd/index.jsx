@@ -16,7 +16,7 @@ class HomeAd extends React.Component {
                     {this.props.data.map((item, index) => {
                         return <div key={index} className="ad-item float-left">
                             <a href={item.link} target="_blank">
-                                <img src={item.img} alt={item.title}/>
+                                <img src="../../../images/ad.jpg" alt={item.title}/>
                             </a>
                         </div>
                     })}
