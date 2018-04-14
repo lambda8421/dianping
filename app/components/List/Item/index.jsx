@@ -3,6 +3,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { Link } from 'react-router'
 
 import './style.less'
+import listImage from '../../../static/images/home_list.jpg'
 
 class ListItem extends React.Component {
     constructor(props, context) {
@@ -15,7 +16,7 @@ class ListItem extends React.Component {
             <div className="list-item clear-fix">
                 <Link to={'/detail/' + data.id}>
                     <div className="item-img-container float-left">
-                        <img src={require('../../../../images/home_list.jpg')} alt={data.title}/>
+                        <img src={listImage} alt={data.title}/>
                     </div>
                     <div className="item-content">
                         <div className="item-title-container clear-fix">

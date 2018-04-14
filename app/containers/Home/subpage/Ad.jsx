@@ -35,10 +35,10 @@ class Ad extends React.Component {
                     data: data
                 })
             }
-        }).catch(ex => {
+        }).catch(err => {
             // 发生错误
             if (__DEV__) {
-                console.error('首页广告模块获取数据报错, ', ex.message)
+                console.error('首页广告模块获取数据报错, ', err.message)
             }
         })
     }

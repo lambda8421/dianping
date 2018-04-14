@@ -3,6 +3,8 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import './style.less'
 
+import AdImage from '../../static/images/ad.jpg'
+
 class HomeAd extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -16,7 +18,7 @@ class HomeAd extends React.Component {
                     {this.props.data.map((item, index) => {
                         return <div key={index} className="ad-item float-left">
                             <a href={item.link} target="_blank">
-                                <img src="../../../images/ad.jpg" alt={item.title}/>
+                                <img src={AdImage} alt={item.title}/>
                             </a>
                         </div>
                     })}
