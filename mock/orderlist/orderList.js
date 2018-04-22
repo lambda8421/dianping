@@ -18,7 +18,7 @@ module.exports = [
     {
         id: Date.now(),
         img: 'https://image.ibb.co/cFT4ux/home_list.png',
-        title: '好吃自出餐',
+        title: '好吃自助',
         count: 2,
         price: '110',
         commentState: 2

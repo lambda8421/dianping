@@ -47,8 +47,8 @@ class Item extends React.Component {
                     // “评价中”才会显示输入框
                     this.state.commentState === 1
                     ? <div className="comment-text-container">
-                        <textarea style={{width: '100%', height: '80px'}} className="comment-text" ref="commentText"></textarea>
-                        <div style={{paddingTop: '10px', paddingBottom: '10px'}}>
+                        <textarea className="comment-text" ref="commentText"></textarea>
+                        <div className="star" style={{paddingTop: '10px', paddingBottom: '10px'}}>
                             <Star star="0" clickCallback={this.starClickCallback.bind(this)}/>
                         </div>
                         <button className="btn" onClick={this.submitComment.bind(this)}>提交</button>
