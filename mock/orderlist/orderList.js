@@ -17,7 +17,7 @@ module.exports = [
     },
     {
         id: Date.now(),
-        img: 'http://images2015.cnblogs.com/blog/138012/201610/138012-20161016201645858-1342445625.png',
+        img: 'https://image.ibb.co/cFT4ux/home_list.png',
         title: '好吃自出餐',
         count: 2,
         price: '110',
