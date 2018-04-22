@@ -1,11 +1,71 @@
-# react-simple-o2o-demo
 
-### npm install
+# Groupon-app (REACT)
 
-### npm run [win_].start
+> Groupon-app built using React.
 
-run client
 
-### npm run mock
+### Articles
+
+- [Adding Preprocessor to Create React App](https://github.com/facebook/create-react-app/blob/master/packages/react-scripts/template/README.md#adding-a-css-preprocessor-sass-less-etc)
+
+## Implementation
+
+The app was created using React by create-react-app.  The index.tmpl.html which is  placed in the public folder is the entry file, the src folder contains all of the source code.
+
+Here is the detail
+
+### app
+#### components (contains all the components)
+* CityList -List current city and all cites for changing 
+
+
+#### containers (contains all containers)
+* App.js (The entry of application which contain all the data,logic and component)
+* Input.js
+* ToDoList.js
+
+#### config
+* localStoreKey.js  (local storage key for )
+
+
+#### tests
+* this is the place for testing
+
+#### utils
+* registerServiceWorker.js 
+
+#### index.js (where react scripts looks for dom render)
+
+## Features
+
+
+There are some features implemented:
+
+* Three parts of UI, title, input and Todo list.
+* When there is no Todos, Todo list is hidden.
+* Type Todo in the input and add Todo to the list when click +
+* O(complete) and X(remove) will show when Todo item in list is on hover
+* Complete Todo item by clicking O and remove Todo item by clicking X
+* Whenever Todo item is completed, the item background color will be green.
+* Complete all tood items which are not completed
+* Remove all Todo items which are completed
+* Show the count in Todo list
+
+
+
+There are some features in the future:
+* Router (react-router)
+* Data flow(Redux/Flux)
+* Storage(Server/Local storage persistence)
+* More ...
+
+## Run
+
 
 run server
+* clone down test-react-todomvc
+* cd into test-react-todomvc
+* npm install
+* npm run mock
+* npm run [win_].start
+* npm start
