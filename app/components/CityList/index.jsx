@@ -54,8 +54,8 @@ class CityList extends React.Component {
         )
     }
     clickHandle(cityName) {
-        const changeFn = this.props.changeFn
-        changeFn(cityName)
+        const changeCityName = this.props.changeCityName
+        changeCityName(cityName)
     }
 }
 
