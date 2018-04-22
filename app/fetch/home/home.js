@@ -1,11 +1,9 @@
 import { get } from '../get'
 
 export function getAdData() {
-    const result = get('/api/homead')
-    return result
+    return get('/api/homead')
 }
 
 export function getListData(city, page) {
-    const result = get('/api/homelist/' + encodeURIComponent(city) + '/' + page)
-    return result
+    return get('/api/homelist/' + encodeURIComponent(city) + '/' + page)
 }

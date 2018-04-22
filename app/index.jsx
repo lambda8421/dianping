@@ -7,7 +7,7 @@ import configureStore from './store/configureStore'
 import './static/css/common.less'
 import './static/css/font.css'
 
-// 创建 Redux 的 store 对象
+// create store
 const store = configureStore()
 
 import RouteMap from './router/routeMap'

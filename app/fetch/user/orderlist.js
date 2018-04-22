@@ -2,15 +2,13 @@ import { get } from '../get'
 import { post } from '../post'
 
 export function getOrderListData(username) {
-    const result = get('/api/orderlist/' + username)
-    return result
+    return get('/api/orderlist/' + username)
 }
 
 export function postComment(id, comment, star) {
-    const result = post('/api/submitComment', {
+    return post('/api/submitComment', {
         id: id,
         comment: comment,
         star: star
     })
-    return result
 }

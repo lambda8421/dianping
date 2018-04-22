@@ -10,7 +10,7 @@ import CityList from '../../components/CityList'
 
 import * as userInfoActionsFromOtherFile from '../../actions/userinfo'
 
-import { CITYNAME } from '../../config/localStoreKey'
+import { CITYNAME } from '../../util/localStoreKey'
 import localStore from '../../util/localStore'
 
 class City extends React.Component {
